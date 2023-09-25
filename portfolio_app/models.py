@@ -7,8 +7,19 @@ class adminModel(models.Model):
 
 # Create your models here.
 
+class Portfolio(models.Model):
+    name = models.CharField(max_length=200) 
+    
+    def __str__(self):
+        return self.name
+    
+class Project(models.Model):
+    name = models.CharField(max_length=200) 
+    
+    def __str__(self):
+        return self.name
+
 class Student(models.Model):
-    portfolio = models.OneToOneField(Portfolio, on_delete=models.CASCADE, unique=True)
 #List of choices for major value in database, human readable name
     MAJOR = (
     ('CSCI-BS', 'BS in Computer Science'),
@@ -23,6 +34,8 @@ class Student(models.Model):
     email = models.CharField("UCCS Email", max_length=200)
     major = models.CharField(max_length=200, choices=MAJOR)
 
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+
 #Define default String to return the name for representing the Model object."
     def __str__(self):
         return self.name
@@ -32,4 +45,16 @@ class Student(models.Model):
 # add a "View on Site" button to the model's record editing screens in the Admin site
     def get_absolute_url(self):
         return reverse('student-detail', args=[str(self.id)])
+
+class ProjectsInPortfolio(models.Model):
+
+#deleting a portfolio will delete associate projects
+    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+#deleting a project will not affect the portfolio
+#Just the entry will be removed from this table
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+
+class Meta:
+#ensures that each project is associated with only one portfolio
+    unique_together = ('portfolio', 'project')
 
