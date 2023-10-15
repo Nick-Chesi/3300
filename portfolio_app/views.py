@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import generic
+from .forms import ProjectForm
 from .models import Student, Project, Portfolio, ProjectsInPortfolio
 # Create your views here.
 def index(request):
@@ -25,12 +26,24 @@ class StudentDetailView(generic.DetailView):
     template_name = 'portfolio_app/student_detail.html'
 
 class PortfolioDetailView(generic.DetailView):
-    model = Portfolio
+    model = Student
     template_name = 'portfolio_app/portfolio_detail.html'
 
     def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
-        # Retrieve the associated projects for this portfolio
-        projects = ProjectsInPortfolio.objects.filter(portfolio=self.object).values_list('project', flat=True)
-        context['projects'] = Project.objects.filter(pk__in=projects)
+        projects_associated = ProjectsInPortfolio.objects.filter(portfolio=self.object.portfolio).select_related('project')
+        context['projects'] = [project_association.project for project_association in projects_associated]
         return context
+
+def createProject(request, portfolio_id):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+            project.portfolio_id = portfolio_id 
+            project.save()
+            return redirect('portfolio-detail', pk=portfolio_id)
+    else:
+        form = ProjectForm()
+    return render(request, 'portfolio_app/create_project.html', {'form': form})

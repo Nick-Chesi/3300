@@ -1,16 +1,20 @@
-{% extends 'base.html' %}
+{% extends 'portfolio_app/base_template.html' %}
 
 {% block content %}
-<h1>Portfolio Detail</h1>
-<p>Name: {{ object.name }}</p>
-<p>Description: {{ object.description }}</p>
+    <h1>Student Name: {{ object.name }}</h1>
+    <p>Email: {{ object.email }}</p>
+    <p>Major: {{ object.major }}</p>
 
-<h2>Projects</h2>
-<ul>
-    {% for project in projects %}
-        <li><a href="{% url 'project-detail' project.pk %}">{{ project.name }}</a></li>
-    {% empty %}
-        <li>No projects available.</li>
-    {% endfor %}
-</ul>
+    <h2>Portfolio: {{ object.portfolio.name }}</h2>
+
+    <h3>Associated Projects:</h3>
+    <ul>
+    {% if projects %}
+        {% for project in projects %}
+            <li>{{ project.name }}</li>
+        {% endfor %}
+    {% else %}
+        <li>No projects associated with this portfolio.</li>
+    {% endif %}
+    </ul>
 {% endblock %}

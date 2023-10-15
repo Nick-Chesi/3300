@@ -16,4 +16,25 @@
       <li>No portfolio available</li>
     {% endif %}
   </ul>
+
+  <!-- Add new project link -->
+  {% if object.student.portfolio %}
+    <h2>Project List</h2>
+    Debugging Text - Before Button
+    <a class="btn btn-primary" href="{% url 'create_project' portfolio_id=object.student.portfolio.id %}" role="button">New</a>
+
+    {% if projects %}
+    <ul>
+    {% for project in projects %}
+    <li>
+    {{ project.title }}:
+    <a class="btn btn-primary" href="{{ project.get_absolute_url }}" role="button">View</a>
+    </li>
+    {% endfor %}
+    </ul>
+    {% else %}
+    <p>No projects available.</p>
+    {% endif %}
+  {% endif %}
+
 {% endblock %}

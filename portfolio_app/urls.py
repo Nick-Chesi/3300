@@ -12,4 +12,5 @@ urlpatterns = [
 path('', views.index, name='index'),
 path('projects/', ProjectListView.as_view(), name='project_list'),
 path('projects/<int:pk>/', ProjectDetailView.as_view(), name='project_detail'),
+path('portfolio/<int:portfolio_id>/create_project/', views.createProject, name='create_project'),
 ]

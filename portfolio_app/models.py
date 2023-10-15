@@ -14,11 +14,15 @@ class Portfolio(models.Model):
     def __str__(self):
         return self.name
     
+    def get_absolute_url(self):
+        return reverse('portfolio-detail', args=[str(self.id)])
+    
 class Project(models.Model):
-    name = models.CharField(max_length=200) 
+    title = models.CharField(max_length=200) 
+    description = models.TextField(default="Default description.")
     
     def __str__(self):
-        return self.name
+        return self.title
     
 class Student(models.Model):
 #List of choices for major value in database, human readable name
@@ -58,4 +62,3 @@ class ProjectsInPortfolio(models.Model):
 #class Meta:
 #ensures that each project is associated with only one portfolio
 #    unique_together = ('portfolio', 'project')
-
