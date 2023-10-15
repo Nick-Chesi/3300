@@ -1,0 +1,22 @@
+{% extends 'portfolio_app/base_template.html' %}
+
+{% block content %}
+  <h1>Students and their Portfolios</h1>
+  
+  {% for student in object_list %}
+    <h2>Student Name: {{ student.name }}</h2>
+    <p>Email: {{ student.email }}</p>
+    <p>Major: {{ student.major }}</p>
+
+    <h3>Portfolio:</h3>
+    <ul>
+      {% if student.portfolio %}
+        <li>
+          <a href="{{ student.portfolio.get_absolute_url }}">View Portfolio</a>
+        </li>
+      {% else %}
+        <li>No portfolio available</li>
+      {% endif %}
+    </ul>
+  {% endfor %}
+{% endblock %}

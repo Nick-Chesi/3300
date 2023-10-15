@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from .views import ProjectListView, ProjectDetailView 
+
 
 urlpatterns = [
 #path function defines a url pattern
@@ -8,4 +10,6 @@ urlpatterns = [
 # name='index' parameter is to dynamically create url
 # example in html <a href="{% url 'index' %}">Home</a>.
 path('', views.index, name='index'),
+path('projects/', ProjectListView.as_view(), name='project_list'),
+path('projects/<int:pk>/', ProjectDetailView.as_view(), name='project_detail'),
 ]

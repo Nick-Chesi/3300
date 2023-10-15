@@ -1,0 +1,19 @@
+
+{% extends 'portfolio_app/base_template.html' %}
+
+{% block content %}
+  <h1>Student Name: {{ student.name }}</h1>
+  <p>Email: {{ student.email }}</p>
+  <p>Major: {{ student.major }}</p>
+
+  <h2>Portfolio:</h2>
+  <ul>
+    {% if student.portfolio %}
+      <li>
+        <a href="{{ student.portfolio.get_absolute_url }}">View Portfolio</a>
+      </li>
+    {% else %}
+      <li>No portfolio available</li>
+    {% endif %}
+  </ul>
+{% endblock %}

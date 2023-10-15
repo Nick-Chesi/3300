@@ -8,7 +8,8 @@ class adminModel(models.Model):
 # Create your models here.
 
 class Portfolio(models.Model):
-    name = models.CharField(max_length=200) 
+    name = models.CharField(max_length=200)
+    is_active = models.BooleanField(default=True)
     
     def __str__(self):
         return self.name
@@ -18,7 +19,7 @@ class Project(models.Model):
     
     def __str__(self):
         return self.name
-
+    
 class Student(models.Model):
 #List of choices for major value in database, human readable name
     MAJOR = (
@@ -54,7 +55,7 @@ class ProjectsInPortfolio(models.Model):
 #Just the entry will be removed from this table
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
-class Meta:
+#class Meta:
 #ensures that each project is associated with only one portfolio
-    unique_together = ('portfolio', 'project')
+#    unique_together = ('portfolio', 'project')
 

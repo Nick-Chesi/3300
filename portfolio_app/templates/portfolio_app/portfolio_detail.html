@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Portfolio Detail</h1>
+<p>Name: {{ object.name }}</p>
+<p>Description: {{ object.description }}</p>
+
+<h2>Projects</h2>
+<ul>
+    {% for project in projects %}
+        <li><a href="{% url 'project-detail' project.pk %}">{{ project.name }}</a></li>
+    {% empty %}
+        <li>No projects available.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
