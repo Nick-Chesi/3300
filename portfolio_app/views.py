@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views import generic
 from .forms import ProjectForm
@@ -47,3 +47,33 @@ def createProject(request, portfolio_id):
     else:
         form = ProjectForm()
     return render(request, 'portfolio_app/create_project.html', {'form': form})
+
+
+def deleteProject(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    if request.method == "POST":
+        project.delete()
+        return redirect('portfolio-detail', pk=project.portfolio.id)
+    return render(request, 'portfolio_app/confirm_delete.html', {'object': project})
+
+def editProject(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    if request.method == "POST":
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            return redirect('project-detail', pk=project.id)
+    else:
+        form = ProjectForm(instance=project)
+    return render(request, 'portfolio_app/edit_project.html', {'form': form, 'project': project})
+
+def editPortfolio(request, pk):
+    portfolio = get_object_or_404(Portfolio, pk=pk)
+    if request.method == "POST":
+        form = ProjectForm(request.POST, instance=portfolio)
+        if form.is_valid():
+            form.save()
+            return redirect('portfolio-detail', pk=portfolio.id)
+    else:
+        form = ProjectForm(instance=portfolio)
+    return render(request, 'portfolio_app/edit_portfolio.html', {'form': form, 'portfolio': portfolio})

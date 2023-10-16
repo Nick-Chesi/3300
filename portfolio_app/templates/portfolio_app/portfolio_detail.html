@@ -6,12 +6,20 @@
     <p>Major: {{ object.major }}</p>
 
     <h2>Portfolio: {{ object.portfolio.name }}</h2>
+    <!-- Add Edit Portfolio link -->
+    <a class="btn btn-primary" href="{% url 'edit_project' object.portfolio.id %}" role="button">Edit Portfolio</a>
 
     <h3>Associated Projects:</h3>
     <ul>
     {% if projects %}
         {% for project in projects %}
-            <li>{{ project.name }}</li>
+            <li>
+                {{ project.name }}
+                <!-- Edit Project link -->
+                <a class="btn btn-primary btn-sm" href="{% url 'edit_project' project.id %}" role="button">Edit</a>
+                <!-- Delete Project link -->
+                <a class="btn btn-danger btn-sm" href="{% url 'delete_project' project.id %}" role="button">Delete</a>
+            </li>
         {% endfor %}
     {% else %}
         <li>No projects associated with this portfolio.</li>
